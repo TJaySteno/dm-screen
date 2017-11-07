@@ -1,0 +1,217 @@
+/* CSS RESET */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption {
+		border-radius: 10px;
+    margin: 0 0 0 5px;
+    outline: 0;
+    vertical-align: top;
+    background: transparent;
+}
+
+/* HALF SCREEN */
+
+a {
+	color: #795532;
+}
+
+body {
+	background-color: #c19469;
+	font-family: 'Merienda', cursive;
+}
+
+h1, legend, button { 
+	font-family: 'Kalam', cursive;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+hr {
+	height: 2px;
+	border-width: 0;
+	background-color: #795532;
+}
+
+legend {
+	font-size: 16px;
+}
+
+div {
+	display: block;
+	padding: 0;
+	margin: 0;
+	width: 95%;
+	vertical-align: top;
+}
+
+fieldset {
+	background-color: #d2b48c;
+	border: groove 2px #795532;
+	display: inline-block;
+	font-size: 14px;
+	width: 28%;
+	vertical-align: top;
+}
+
+.links li {
+	display: inline-block;
+	margin: 0;
+	padding: 3px 5px;
+}
+
+p.display {
+	background-color: #d2b48c;
+	border: groove 1px #795532;
+	padding: 10px;
+	margin: 5px auto;
+	height: 120px;
+	width: 65%;
+	word-wrap: normal;
+}
+
+p.input {
+	display: inline-block;
+}
+
+.initiative div {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	width: 49%;
+}
+
+.initiative input {
+	width: 27%;
+}
+
+.links select {
+	width: 89%;
+}
+
+.tables fieldset {
+	background-color: #d2b48c;
+	margin-right: 10px;
+	padding: 10px;
+}
+
+.tables * {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.tables img {
+	display: block;
+	margin: auto;
+	margin-top: 5px;
+}
+
+input {
+	background-color: transparent;
+	border: solid 1px #795532;
+	border-radius: 3px;
+	width: 100%;
+}
+
+.dice input {
+	font-family: 'Kalam', cursive;
+	font-size: 15px;
+	height: 25px;
+	padding: 0 3px;
+	width: 80px;
+}
+
+input:focus {
+	outline: 0;
+}
+
+button {
+	background-color: #795532;
+	border: outset 3px #795532;
+	border-radius: 5px;
+	font-size: 14px;
+	margin-top: 5px;
+	width: 30%;
+}
+
+.dice button {
+	margin: 0;
+	width: 8%;
+}
+
+.initiative button {
+	font-size: 13px;
+	margin: auto;
+	width: 48%;
+}
+
+.links button {
+	width: 10%;
+}
+
+.tables button {
+	font-size: 13px;
+	height: 23px;
+	margin: 0;
+	width: 20%;
+}
+
+button:active, button:focus, button:hover {
+	outline: 0;
+}
+
+button:active, button:hover {
+	border: inset 3px #795532;
+}
+
+select {
+	background-color: #d2b48c;
+	border: solid 1px #795532;
+	border-radius: 3px;
+	font-size: 14px;
+	width: 30%;
+}
+
+select:active, select:focus, select:hover {
+	outline: 0;
+}
+
+footer {
+	display: block;
+	float: right;
+	margin: 40px;
+	margin-bottom: 25px;
+}
+
+.narrow {
+	width: 40px;
+}
+
+.wide {
+	width: 93.5%;
+}
+
+/* FULL SCREEN */
+
+@media screen and (min-width: 1250px) {
+	
+	div {
+		display: inline-block;
+		margin: 0;
+		width: 100%;
+	}
+	
+	.left {
+		width: 50%;
+	}
+	
+	.right {
+		width: 40%;
+	}
+
+	footer {
+		margin-top: 20px;
+		margin-right: 100px;
+	}
+	
+}

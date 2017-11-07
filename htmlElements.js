@@ -5,13 +5,8 @@ const diceDiv = document.querySelector('.dice');
 	const diceButtons = diceDiv.firstElementChild.querySelectorAll('button');
 	const rollButton = Array.from(diceButtons).shift();
 	const diceInput = rollButton.previousElementSibling;
-
-//Trash Talk
-const left = document.querySelector('.left');
-
-const trashTalk = document.querySelector('.trash-talk');
-	const trash = trashTalk.firstElementChild.lastElementChild;
-	const trashTalkSelect = trash.previousElementSibling;
+	
+	console.log(diceButtons)
 
 //Display
 const display = document.querySelector('.display');
@@ -45,7 +40,6 @@ const tables = document.querySelector('.tables');
 
 //Event listeners
 	//Left div
-trash.addEventListener('click', function () { print(getTrashTalk()); });
 rollButton.addEventListener('click', function () { 
 	print(getInputValues(diceInput.value)); 
 });

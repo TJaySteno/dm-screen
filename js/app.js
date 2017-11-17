@@ -12,7 +12,8 @@ function addTime (message) {
 let previousRolls = [];
 
 function getInputValues (val) {
-	const rolls = val.split('+'); //1d20, 
+	if (!val) { throw new Error('no input') };
+	const rolls = val.split('+'); //1d20,
 	// rolls.push(val.slice('-'));
 	const numOfDice = [];
 	const dieSides = [];
@@ -25,9 +26,7 @@ function getInputValues (val) {
 			modifier.push(Number(rolls[i]));
 		}
 	}
-	console.log(numOfDice);
-	console.log(dieSides);
-	console.log(modifier);
+
 	const message = rollDice(val, numOfDice, dieSides, modifier);
 	diceInput.value = '';
 	diceInput.focus();
@@ -69,31 +68,49 @@ function allRollsMessage (newRoll) {
 	return message;
 }
 
-//Trash Talk
-function getTrashTalk () {
-	const input = trashTalkSelect.value.toUpperCase();
-	let raceData = data[input];
-	let message = '<ul>';
-	let prompt;
-	if (input === 'HALFELF' || input === 'HALFORC') {
-		const subrace = input[4]+input[5]+input[6];
-		do {
-			prompt = window.prompt(`Are you a 'human', an '${subrace.toLowerCase()}', or 'neither'? Just enter the first letter.`).toUpperCase();
-		} while ( prompt !== 'H' && prompt !== subrace[0] && prompt !== 'N' && 
-							prompt !== 'HUMAN' && prompt !== subrace && prompt !== 'NEITHER' );
-		if (prompt != subrace[0] && prompt != subrace) {
-			raceData = raceData.concat(data[subrace]);
-		} else if (prompt != 'H' && prompt != 'HUMAN') {
-			raceData = raceData.concat(data['HUMAN']);
-		}
-	}
-	const length = raceData.length;
-	for (let i = 0; i < 5; i++) {
-		let random = d(length)-1;
-		message += `<li>${raceData[random]}</li>`;
-	}
-	message += '</ul>';
-	return message;
+//PC Tracker
+function createEditDiv (string) {
+	//return this with values
+		// <div class="create-edit">
+		// 	<input type="text" name="nameInput" placeholder="name">
+		// 	<input type="text" name="raceInput" placeholder="race">
+		// 	<input type="text" name="classInput" placeholder="class">
+		// 	<input type="text" name="perceptionInput" placeholder="pass. perc.">
+		// 	<textarea name="name" rows="2" cols="90" placeholder="extra notes"></textarea>
+		// 	<button type="button" name="finish">&#10004;</button>
+		// </div>
+}
+
+function addPC () {
+// 	var btn = document.createElement("BUTTON");        // Create a <button> element
+// var t = document.createTextNode("CLICK ME");       // Create a text node
+// btn.appendChild(t);                                // Append the text to <button>
+// document.body.appendChild(btn);                    // Append <button> to <body> 
+
+	// create blank 'create-edit' div
+		// alter addPCbutton.textContent
+	// addEventListener
+		// checkbox
+		// addPCbutton
+	let x;
+}
+
+function editPC () {
+	// 1. add buttons to 'p' elements
+		// alter editPCbutton.textContent
+		// addEventListener
+	// 2. change chosen 'p' into 'create-edit div'
+		// remove small buttons
+		// addEventListener checkbox
+	let x;
+}
+
+function removePC () {
+	// 1. add buttons to 'p' elements
+		// alter removePCbutton.textContent
+		// addEventListener
+	// 2. delete 'p' element
+	let x;
 }
 
 //Initiative Tracker

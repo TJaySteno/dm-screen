@@ -1,19 +1,24 @@
 //HTML elements
 //Left div
 //Dice
-const diceDiv = document.querySelector('.dice');
+const diceDiv = document.querySelector('#dice');
 	const diceButtons = diceDiv.firstElementChild.querySelectorAll('button');
 	const rollButton = Array.from(diceButtons).shift();
 	const diceInput = rollButton.previousElementSibling;
-	
-	console.log(diceButtons)
 
 //Display
-const display = document.querySelector('.display');
+const display = document.querySelector('#display');
+
+//PC Tracker
+const pcTrackerDiv = document.querySelector('#pc-tracker');
+	const pcDiv = pcTrackerDiv.firstElementChild.firstElementChild.nextElementSibling;
+	const addPCbutton = pcDiv.nextElementSibling;
+	const editPCbutton = addPCbutton.nextElementSibling;
+	const removePCbutton = editPCbutton.nextElementSibling;
 
 //Right div
 //Initiative Tracker
-const initiativeTracker = document.querySelector('.initiative');
+const initiativeTracker = document.querySelector('#initiative');
 	//Left side
 	const leftDiv = initiativeTracker.firstElementChild.firstElementChild.nextElementSibling;
 	const name = leftDiv.firstElementChild.nextElementSibling;
@@ -26,30 +31,31 @@ const initiativeTracker = document.querySelector('.initiative');
 	const clearInit = clearByNameInit.nextElementSibling;
 	//Display
 	const initDisplay = rightDiv.nextElementSibling.nextElementSibling;
-	
-//Other Resources
-const links = document.querySelector('.links');
-	const linkButton = links.firstElementChild.lastElementChild;
-	const linkSelect = linkButton.previousElementSibling;
 
 //Tables
-const tables = document.querySelector('.tables');
+const tables = document.querySelector('#tables');
 	const select = tables.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling;
 	const button = select.nextElementSibling;
 	const img = button.nextElementSibling.nextElementSibling;
 
+//Footer
+//Other Resources
+const links = document.querySelector('#links');
+const linkButton = links.lastElementChild;
+const linkSelect = linkButton.previousElementSibling;
+
 //Event listeners
 	//Left div
-rollButton.addEventListener('click', function () { 
-	print(getInputValues(diceInput.value)); 
+rollButton.addEventListener('click', function () {
+	print(getInputValues(diceInput.value));
 });
 for (let i = 1; i < diceButtons.length; i++) {
 	diceButtons[i].addEventListener('click', function () { print(rollDice(`1d${diceButtons[i].value}`, [1], [diceButtons[i].value])) });
 }
 
-linkButton.addEventListener('click', function () {
-	if (linkSelect.value) { window.open(linkSelect.value, '_blank') }
-});
+addPCbutton.addEventListener('click', function () { addPC() });
+editPCbutton.addEventListener('click', function () { editPC() });
+removePCbutton.addEventListener('click', function () { removePC() });
 
 	//Right div
 addInit.addEventListener('click', function () { initDisplay.innerHTML = addToList() });
@@ -60,6 +66,11 @@ clearInit.addEventListener('click', function () { initDisplay.innerHTML = clearI
 button.addEventListener('click', function () {
 	const input = select.value;
 	img.src = `./images/${input}.jpg`;
+});
+
+	//Footer
+linkButton.addEventListener('click', function () {
+	if (linkSelect.value) { window.open(linkSelect.value, '_blank') }
 });
 
 //Print function

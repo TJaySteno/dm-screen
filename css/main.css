@@ -1,0 +1,281 @@
+/***     HALF SCREEN/TABLETS     ***/
+
+/*     CSS PRESETS     */
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption {
+		border-radius: 10px;
+    margin: 0 0 0 5px;
+    outline: 0;
+    vertical-align: top;
+    background: transparent;
+}
+
+/*     FONTS     */
+
+body, option, select {
+	font-family: 'Merienda', cursive;
+}
+
+button, h1, input, legend, textarea, ::placeholder {
+	font-family: 'Kalam', cursive;
+}
+
+/*     GENERAL CONTAINERS & STRUCTURE     */
+
+body {
+	background-color: #c19469;
+	background-image: url('../images/parchment.jpg');
+	max-width: 100%;
+}
+
+header {
+	display: inline-block;
+}
+
+footer {
+	display: inline-block;
+	float: right;
+	margin: 40px;
+	margin-bottom: 25px;
+}
+
+div {
+	display: block;
+	padding: 0;
+	margin: 0;
+	width: 95%;
+	vertical-align: top;
+}
+
+fieldset {
+	background-color: #d2b48c;
+	border: groove 2px #795532;
+	display: inline-block;
+	font-size: .875rem;
+	width: 28%;
+	vertical-align: top;
+}
+
+hr {
+	height: 2px;
+	border-width: 0;
+	background-color: #795532;
+}
+
+.inline {
+	display: inline-block;
+}
+
+/*     INPUT ELEMENTS AND BUTTONS     */
+
+input, textarea {
+	background-color: transparent;
+	border: solid 1px #795532;
+	border-radius: 3px;
+	padding: 0 3px;
+}
+
+input:focus, textarea:focus {
+	outline: 0;
+}
+
+select {
+	background-color: #d2b48c;
+	border: solid 1px #795532;
+	border-radius: 3px;
+	font-size: 14px;
+	width: 30%;
+}
+
+select:active, select:focus, select:hover {
+	outline: 0;
+}
+
+button {
+	background-color: #795532;
+	border: outset 3px #795532;
+	border-radius: 5px;
+	font-size: 14px;
+	margin-top: 5px;
+	width: 30%;
+}
+
+button:active, button:focus, button:hover {
+	outline: 0;
+}
+
+button:active, button:hover {
+	border: inset 3px #795532;
+}
+
+/*     TEXT     */
+
+.main-title {
+	font-size: 4rem;
+	display: inline-block;
+}
+
+a {
+	color: black;
+	text-decoration: underline;
+}
+
+legend {
+	font-size: 1rem;
+}
+
+.hanging-indent {
+	display: inline-block;
+  margin-left: 22px;
+  text-indent: -22px;
+	width: 90%;
+}
+
+.inline-button {
+	display: inline-block;
+	font-size: 10px;
+	height: 25px;
+	width: 25px;
+	padding: 0;
+	text-align: center;
+}
+
+.narrow {
+	width: 40px;
+}
+
+.wide {
+	width: 93.5%;
+}
+
+/*     DICE MODULE     */
+
+#dice button {
+	margin: 0;
+	width: 8%;
+}
+
+#dice input {
+	font-size: 15px;
+	height: 25px;
+	width: 80px;
+}
+
+/*     DISPLAY BOX     */
+
+p#display {
+	background-color: #d2b48c;
+	border: groove 1px #795532;
+	padding: 10px;
+	margin: 5px auto;
+	height: 120px;
+	width: 65%;
+	word-wrap: normal;
+}
+
+/*     PC TRACKER MODULE     */
+
+#pc-tracker input {
+	width: 23%;
+}
+
+.create-edit input, textarea {
+	margin-top: 3px;
+}
+
+.create-edit button {
+	display: inline-block;
+	height: 40px;
+	width: 40px;
+	vertical-align: top;
+}
+
+/*     INITIATIVE MODULE     */
+
+#initiative button {
+	font-size: 13px;
+	margin: auto;
+	width: 48%;
+}
+
+#initiative div {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	width: 49%;
+}
+
+#initiative input {
+	width: 25%;
+}
+
+/*     TABLES MODULE     */
+
+#tables button {
+	font-size: 13px;
+	height: 23px;
+	margin: 0;
+	width: 20%;
+}
+
+#tables fieldset {
+	background-color: #d2b48c;
+	margin-right: 10px;
+	padding: 10px;
+}
+
+#tables * {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#tables option {
+	display: block;
+}
+
+#tables img {
+	display: block;
+	margin: auto;
+	margin-top: 5px;
+}
+
+/*     LINKS MODULE     */
+
+#links button {
+	width: 10%;
+}
+
+#links li {
+	display: inline-block;
+	margin: 0;
+	padding: 3px 5px;
+}
+
+#links select {
+	width: 89%;
+}
+
+/* FULL SCREEN */
+
+@media screen and (min-width: 1250px) {
+
+	div {
+		display: inline-block;
+		margin: 0;
+		width: 100%;
+	}
+
+	footer {
+		margin-top: 20px;
+		margin-right: 100px;
+	}
+
+	#left {
+		width: 50%;
+	}
+
+	#right {
+		width: 40%;
+	}
+
+}

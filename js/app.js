@@ -1,40 +1,53 @@
-//General Purpose Functions
-//Dice function
+// GENERAL PURPOSE FUNCTIONS
+// DICE FUNCTIONS
 function d (sides) { return Math.floor(Math.random() * sides ) + 1; };
 
-//Add time stamp
+// ADD TIME STAMP
 function addTime (message) {
 	let date = new Date();
 	return ` - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
 
+// LOCAL STORAGE AND VARIABLES
+const previousRolls = [];
+const initiative = getLocalStorage('initiative') || [];
+
 //Dice
-let previousRolls = [];
-
 function getInputValues (val) {
-	if (!val) { throw new Error('no input') };
-	const rolls = val.split('+'); //1d20,
-	// rolls.push(val.slice('-'));
-	const numOfDice = [];
-	const dieSides = [];
-	let modifier = [];
-	for (let i = 0; i < rolls.length; i++) {
-		if (rolls[i].includes('d')) {
-			numOfDice.push(Number(rolls[i].split('d')[0]));
-			dieSides.push(Number(rolls[i].split('d')[1]));
-		} else {
-			modifier.push(Number(rolls[i]));
+	try {
+		if (!val) throw new Error('No input');
+		const rolls = val.split('+');
+		rolls.forEach( function (v,i) {
+			if (v.includes('-')) {
+				const arr = rolls.splice(i, 1)[0].split('-');
+				arr.forEach( function (val,ind) {
+					if (!val.includes('d')) val = `-${val}`;
+					rolls.splice(i, 0, val);
+				});
+			}
+		});
+		const numOfDice = [];
+		const dieSides = [];
+		let modifier = [];
+		for (let i = 0; i < rolls.length; i++) {
+			if (rolls[i].includes('d')) {
+				numOfDice.push(Number(rolls[i].split('d')[0]));
+				dieSides.push(Number(rolls[i].split('d')[1]));
+			} else {
+				modifier.push(Number(rolls[i]));
+			}
 		}
-	}
 
-	const message = rollDice(val, numOfDice, dieSides, modifier);
-	diceInput.value = '';
-	diceInput.focus();
-	return message;
+		diceInput.value = '';
+		diceInput.focus();
+
+		const message = rollDice(val, numOfDice, dieSides, modifier);
+		print(message);
+	} catch (err) { handler(err); }
 }
 
 function rollDice (val, num, sides, mod) {
-	// (1d8+1d6+5): 8, 6, +4 (X total) - 15:19:22
+	// Example message: (1d8+1d6+5): 8, 6, 5 (X total) - 15:19:22
 	let message = `(${val}):`;
 	let sum = 0;
 	//roll as many dice types as you need
@@ -49,8 +62,8 @@ function rollDice (val, num, sides, mod) {
 	}
 	if (mod) {
 		for (let i = 0; i < mod.length; i++) {
-			message += `, +${mod[i]}`;
-			sum += mod;
+			message += `, ${mod[i]}`;
+			sum += Number(mod);
 		};
 	}
 	message += ` (${sum} total)`;
@@ -68,98 +81,66 @@ function allRollsMessage (newRoll) {
 	return message;
 }
 
-//PC Tracker
-function createEditDiv (string) {
-	//return this with values
-		// <div class="create-edit">
-		// 	<input type="text" name="nameInput" placeholder="name">
-		// 	<input type="text" name="raceInput" placeholder="race">
-		// 	<input type="text" name="classInput" placeholder="class">
-		// 	<input type="text" name="perceptionInput" placeholder="pass. perc.">
-		// 	<textarea name="name" rows="2" cols="90" placeholder="extra notes"></textarea>
-		// 	<button type="button" name="finish">&#10004;</button>
-		// </div>
-}
-
-function addPC () {
-// 	var btn = document.createElement("BUTTON");        // Create a <button> element
-// var t = document.createTextNode("CLICK ME");       // Create a text node
-// btn.appendChild(t);                                // Append the text to <button>
-// document.body.appendChild(btn);                    // Append <button> to <body> 
-
-	// create blank 'create-edit' div
-		// alter addPCbutton.textContent
-	// addEventListener
-		// checkbox
-		// addPCbutton
-	let x;
-}
-
-function editPC () {
-	// 1. add buttons to 'p' elements
-		// alter editPCbutton.textContent
-		// addEventListener
-	// 2. change chosen 'p' into 'create-edit div'
-		// remove small buttons
-		// addEventListener checkbox
-	let x;
-}
-
-function removePC () {
-	// 1. add buttons to 'p' elements
-		// alter removePCbutton.textContent
-		// addEventListener
-	// 2. delete 'p' element
-	let x;
-}
-
 //Initiative Tracker
-const initiative = getLocalStorage() || [];
-
 function getLocalStorage () {
-	if (!localStorage.initiative) { return false };
-	const array = [];
-	const storage = localStorage.initiative;
-	const storageSplit = storage.split(', ');
-	for (let i = 0; i < storageSplit.length; i++) {
-		const itemSplit = storageSplit[i].split(': ');
-		const item = {
-			name: itemSplit[0],
-			init: itemSplit[1]
+	// Retrieve local storage and convert into a format printInitiative can use
+		// Split by '$%', then by ':', store as array of objects w/ name & init keys
+	try {
+		if ( !localStorage.initiative ) { return false };
+		const storage = localStorage.initiative.split('$%');
+		const initiative = [];
+		for (let i = 0; i < storage.length; i++) {
+			const item = storage[i].split(': ');
+			const obj = {
+				name: item[0],
+				init: item[1]
+			}
+			initiative.push(obj);
 		}
-		array.push(item);
-	}
-	return array;
+		return initiative;
+	} catch (err) { handler(err); }
 }
 
-function addToList () {
+function addToInitiativeList () {
+	//
 	try {
-		if (!name.value) { throw new Error('name') };
-		if (!init.value || isNaN(init.value)) { throw new Error('init'); }
+		if (!name.value) { throw new Error('No name was entered') };
+		if (!init.value || isNaN(init.value)) { throw new Error('Please enter a valid initiative'); }
 		const input = {
 			name: name.value,
 			init: init.value
 		}
 		initiative.unshift(input);
+		initiative.sort((a, b) => b.init - a.init);
 		clearInitInputs();
 		return printInitiative();
-	} catch (err) { throw err; }
+	} catch (err) {
+		handler(err);
+		return printInitiative();
+	}
 }
 
 function sortInitiative () {
-	initiative.sort((a, b) => b.init - a.init);
-	return printInitiative();
+	console.log('Depricated button');
 }
 
 function clearByName () {
-	const input = name.value.toLowerCase();
-	for (let i = 0; i < initiative.length; i++) {
-		if (input === initiative[i].name.toLowerCase()) {
-			initiative.splice(i, 1);
+	try {
+		const input = name.value.toLowerCase();
+		let found = false;
+		for (let i = 0; i < initiative.length; i++) {
+			if (input === initiative[i].name.toLowerCase()) {
+				initiative.splice(i, 1);
+				found = true;
+			}
 		}
+		if (!found) throw new Error('Name given was not found');
+		clearInitInputs();
+	} catch (err) {
+		handler(err);
+	} finally {
+		return printInitiative();
 	}
-	clearInitInputs();
-	return printInitiative();
 }
 
 function clearInitiative () {
@@ -170,11 +151,16 @@ function clearInitiative () {
 
 function printInitiative () {
 	let message = '';
+	let storage = '';
 	for (let i = 0; i < initiative.length; i++) {
-		if (i !== 0) { message += ', ' };
+		if (i !== 0) {
+			message += ', ';
+			storage += '$%';
+		};
 		message += `${initiative[i].name}: ${initiative[i].init}`;
+		storage += `${initiative[i].name}: ${initiative[i].init}`;
 	}
-	localStorage.initiative = message;
+	localStorage.initiative = storage;
 	return message;
 }
 
@@ -188,8 +174,8 @@ initDisplay.innerHTML = printInitiative();
 
 //Error handler
 function handler (err) {
-	console.log(err);
-	let message = `${err.message}<br>`;
-	if (err.status) { message += `Status: ${err.status}` };
+	let message = `Error: ${err.message}`;
 	print(message);
+	console.log(err);
+	return false;
 }

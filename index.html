@@ -10,6 +10,7 @@
 	<body>
 		<header>
 			<h1 class="main-title">DM Screen!</h1>
+			<!-- If this page gets much bigger, use nav to help navigate around it
 			<fieldset>
 				<p>Links Within This Page</p>
 				<a href="#dice">Dice</a>,
@@ -18,7 +19,7 @@
 				<a href="#initiative">Initiative Tracker</a>,
 				<a href="#tables">Helpful Tables</a>,
 				<a href="#links">Links</a>
-			</fieldset>
+			</fieldset> -->
 		</header>
 		<main>
 			<div id="left">
@@ -41,13 +42,10 @@
 				<div id="pc-tracker">
 					<fieldset class="wide">
 						<legend>PC Tracker</legend>
-						<div>
-							<p class="hanging-indent"><b>Ronin</b>, dwarf cleric, perc 11. Likes to drink, but has a heart of gold! Also a bit of a gambler.</p>
-							<!-- <button type="button" name="edit" class="inline-button">&#10000;</button> -->
-							<p class="hanging-indent">This section is in development</p>
-							<!-- <button type="button" name="remove" class="inline-button">&#10006;</button> -->
-						</div>
-						<textarea name="name" rows="2" cols="80"></textarea>
+						<div class="pc-div"></div>
+						<textarea name="name" rows="2" cols="80" placeholder="Name first followed by a comma..."></textarea>
+						<br>
+						<p>- <strong>Suggestions:</strong> name, race, class, passive perception, AC, summary of character.</p>
 						<button type="button" name="addPC">Add PC</button>
 						<button type="button" name="editPC">Edit PC</button>
 						<button type="button" name="removePC">Remove PC</button>

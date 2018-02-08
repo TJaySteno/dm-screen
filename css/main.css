@@ -20,6 +20,10 @@ button, h1, input, legend, textarea, ::placeholder {
 	font-family: 'Kalam', cursive;
 }
 
+textarea {
+	width: 95%;
+}
+
 /*     GENERAL CONTAINERS & STRUCTURE     */
 
 body {
@@ -112,7 +116,6 @@ button:active, button:hover {
 
 .main-title {
 	font-size: 4rem;
-	display: inline-block;
 }
 
 a {
@@ -122,22 +125,6 @@ a {
 
 legend {
 	font-size: 1rem;
-}
-
-.hanging-indent {
-	display: inline-block;
-  margin-left: 22px;
-  text-indent: -22px;
-	width: 90%;
-}
-
-.inline-button {
-	display: inline-block;
-	font-size: 10px;
-	height: 25px;
-	width: 25px;
-	padding: 0;
-	text-align: center;
 }
 
 .narrow {
@@ -175,10 +162,6 @@ p#display {
 
 /*     PC TRACKER MODULE     */
 
-#pc-tracker input {
-	width: 23%;
-}
-
 .create-edit input, textarea {
 	margin-top: 3px;
 }
@@ -188,6 +171,27 @@ p#display {
 	height: 40px;
 	width: 40px;
 	vertical-align: top;
+}
+
+.hanging-indent {
+	display: inline-block;
+	height: 35px;
+  margin-left: 22px;
+  text-indent: -22px;
+	width: 95%;
+}
+
+.inline-button {
+	float: right;
+	font-size: 10px;
+	height: 25px;
+	width: 25px;
+	padding: 0;
+	text-align: center;
+}
+
+.edit-pc {
+	width: 100%;
 }
 
 /*     INITIATIVE MODULE     */

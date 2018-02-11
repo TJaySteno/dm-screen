@@ -121,6 +121,18 @@ function print (message) { display.innerHTML = message };
 
 
 /*** PC TRACKER ***/
+/* NOTE: move init display into pc tracker */
+  // 12 | Ronin, dwarf cleric etc.
+		// <span class='initiative'>12</span> | etc
+		// span.addEventListener('click', editInitiative);
+			// alterButton(addPCbutton, 'Fight!', addPC, setInitiativeOrder);
+				// function setInitiativeOrder () {
+				// 	attribute numbers to 'myPCs'
+				// 	sort
+				// 	print
+				// 	revert 'addPCbutton'
+				// }
+
 /* PC Storage */
 // Retrieve previously stored PCs or create an empty array
 const myPCs = storageToArray(localStorage.pc) || [];
@@ -430,6 +442,93 @@ function clearInitInputs () {
 
 
 
+/*** CALCULATOR ***/
+/* Define HTML Elements */
+const calcDiv = document.querySelector('#calculator');
+	const calcTable = calcDiv.firstElementChild.firstElementChild.nextElementSibling.firstElementChild;
+
+		const calcNodes = {
+			calcDisp: calcTable.querySelector('input'),
+			calcNum: calcTable.querySelectorAll('.number'),
+			calcOp: calcTable.querySelectorAll('.operator'),
+			calcOther: calcTable.querySelectorAll('.calc-func')
+		}
+
+		// Add event listeners for numbers and operators
+		calcNodes.calcNum.forEach(
+			function (node) { node.addEventListener('click', numberClick) });
+		calcNodes.calcOp.forEach(
+			function (node) { node.addEventListener('click', operatorClick) });
+
+		// Add functionality to other buttons
+			// CE, clear entry; display 0, reset calc.input, keep calc.rootNum
+			calcNodes.calcOther[0].addEventListener('click', function () {
+				calcNodes.calcDisp.value = 0;
+				calc.input = '';
+			});
+			// C, clear; reset all values
+			calcNodes.calcOther[1].addEventListener('click', function () {
+				calcNodes.calcDisp.value = 0;
+				calc.input = '';
+				calc.rootNum = 0;
+				calc.operator = null;
+			});
+			// Backspace; remove last number from calc.input and display new value or 0
+			calcNodes.calcOther[2].addEventListener('click', function () {
+				calc.input = calc.input.substring(0, calc.input.length-1);
+				if (calc.input) calcNodes.calcDisp.value = calc.input;
+				else calcNodes.calcDisp.value = 0;
+			});
+			// Negation button; add or remove a '-' before rootNum
+			/* NOTE: Display '-' more consistenly when dealing with negative nums */
+			calcNodes.calcOther[3].addEventListener('click', function () {
+				if (calc.rootNum[0] === '-') calc.rootNum = calc.rootNum.substring(1, calc.rootNum.length);
+				else calc.rootNum = '-' + calc.rootNum;
+				calcNodes.calcDisp.value = calc.rootNum;
+			});
+
+const calc = {
+	rootNum: 0,
+	input: ''
+}
+
+/* if 0, make it so it wont repeat 0, but will accept other numbers*/
+	/* if !=0 && input!=0 */
+function numberClick (e) { if (calc.input !== '0') calcNodes.calcDisp.value = calc.input += e.target.value };
+
+/* BUG: '=' should reset somehow; after num1 + num2 '=', starting num3 should be indepent unless you click on an operator first */
+function operatorClick (e) {
+	// Perform equation: [ root (operator) input ]
+	switch (calc.operator) {
+		case 'plus':
+			calc.rootNum += Number(calc.input);
+			break;
+		case 'minus':
+			calc.rootNum -= Number(calc.input);
+			break;
+		case 'times':
+			calc.rootNum *= Number(calc.input);
+			break;
+		case 'divide':
+			calc.rootNum /= Number(calc.input);
+			break;
+		// case 'equals':
+		// 	console.log('equals');
+		// default:
+		// 	console.error('somethings wrong');
+	}
+
+	// Display new value, set next operator, and reset input value
+	printCalc(calc.rootNum);
+	calc.operator = e.target.name;
+	calc.input = '';
+}
+
+function printCalc (num) { calcNodes.calcDisp.value = num };
+
+
+
+
 /*** TABLE LOADER ***/
 const tableLoader = document.querySelector('#tables');
 	const tableSelect = tableLoader.firstElementChild.firstElementChild.nextElementSibling.nextElementSibling;
@@ -439,7 +538,6 @@ tableButton.addEventListener('click', function () {
 	if (tableSelect.value) img.src = `./images/${tableSelect.value}.jpg`;
 	else img.display = 'none';
 });
-
 
 
 
@@ -462,3 +560,16 @@ function handler (err) {
 	console.error(err);
 	return false;
 }
+
+
+
+/*** FOR THE FUTURE ***/
+/* Make a button in header, a table in (tables), or selection in (links) that posts an alert giving tips on using the site */
+	// PC tracker: double click initiative to change for next fight
+	// Email for bugs, fixes, Suggestions
+// Calculator
+	// Button in header?
+	// Just below or take place of init tracker?
+// SRD Reference
+	// Takes input, looks it up on SRD
+	// open5e.com

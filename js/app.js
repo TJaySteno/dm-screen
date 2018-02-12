@@ -133,36 +133,6 @@ function print (message) { display.innerHTML = message };
 				// 	revert 'addPCbutton'
 				// }
 
-/* PC Storage */
-// Retrieve previously stored PCs or create an empty array
-const myPCs = storageToArray(localStorage.pc) || [];
-
-// Take a string from local storage and convert it into an array
-	// PC storage template: 'Player 1 name, details$%Player 2 name, details$%etc'
-function storageToArray (storage, type) {
-	if (!storage.length) return false;
-
-	const array = [];
-	const storageSplit = storage.split('$%');
-
-	// Separate initiative into name and init if needed, then push into 'array'
-		// Init array template: [{name: 'P1', init: 1], [name: 'P2', init: 2], etc]
-	storageSplit.forEach( function (val, ind) {
-		if (!type) array.push(val)
-		else {
-			const itemSplit = val.split(': ');
-			const item = {
-				name: itemSplit[0],
-				init: itemSplit[1]
-			}
-			array.push(item);
-		};
-
-		return array;
-	});
-}
-
-
 /* Define HTML Elements */
 const PCtrackerDiv = document.querySelector('#pc-tracker');
 	const PCdiv = PCtrackerDiv.firstElementChild.firstElementChild.nextElementSibling;
@@ -176,6 +146,35 @@ const PCtrackerDiv = document.querySelector('#pc-tracker');
 addPCbutton.addEventListener('click', addPC);
 editPCbutton.addEventListener('click', editPC);
 removePCbutton.addEventListener('click', removePC);
+
+
+/* PC Storage */
+// Retrieve previously stored PCs or create an empty array
+const myPCs = [];
+if (localStorage.pc) {
+	getStorage(localStorage.pc, 'pc');
+	printPCs();
+}
+
+// Take a string from local storage and convert it into an array
+	// PC storage template: 'Player 1 name, details$%Player 2 name, details$%etc'
+function getStorage (storage, type) {
+	const storageSplit = storage.split('$%');
+
+	// Separate initiative into name and init if needed, then push into 'array'
+		// Init array template: [{name: 'P1', init: 1], [name: 'P2', init: 2], etc]
+	storageSplit.forEach( function (val, ind) {
+		if ( type === 'pc' ) myPCs.push(val);
+		else {
+			const itemSplit = val.split(': ');
+			const item = {
+				name: itemSplit[0],
+				init: itemSplit[1]
+			}
+			initiative.push(item);
+		};
+	});
+}
 
 
 /* Add New PCs */
@@ -317,12 +316,12 @@ function printPCs () {
 function storePlayerCharacters () {
 	if (!myPCs.length) return;
 	let string = '';
-	myPCs.forEach( function (PC) { string += `$%${PC}` });
+	myPCs.forEach( function (pc) {
+		if (string.length) string += '$%';
+		string += pc;
+	});
 	localStorage.pc = string;
 }
-
-// On load, print previously saved characters
-printPCs();
 
 
 
@@ -346,16 +345,19 @@ const initiativeTracker = document.querySelector('#initiative');
 
 
 /* Event Listeners */
-addInit.addEventListener('click', function () { initDisplay.innerHTML = addToInitiativeList() });
+addInit.addEventListener('click', addToInitiativeList );
 placeholder.addEventListener('click', function () { return false } ); // Presently has no function, will likely remove
-clearByNameInit.addEventListener('click', function () { initDisplay.innerHTML = clearByName() });
-clearInit.addEventListener('click', function () { initDisplay.innerHTML = clearInitiative() });
+clearByNameInit.addEventListener('click', clearByName );
+clearInit.addEventListener('click', clearInitiative );
 
 
 /* Initiative Storage */
 // Get stored initiative values or create an empty array for new ones
-const initiative = storageToArray('initiative', true) || [];
-
+const initiative = [];
+if (localStorage.initiative) {
+	getStorage(localStorage.initiative, 'init');
+	printInitiative();
+}
 
 /* Initiative User Interface */
 // Take inputs, sort into 'initiative' array, update to localStorage, and print to page
@@ -375,11 +377,11 @@ function addToInitiativeList () {
 
 		// Reset inputs and print
 		clearInitInputs();
-		return printInitiative();
+		printInitiative();
 
 	} catch (err) {
 		handler(err);
-		return printInitiative();
+		printInitiative();
 	}
 }
 
@@ -391,7 +393,7 @@ function clearByName () {
 	try {
 		const input = name.value.toLowerCase();
 		let found = false;
-		initiative.forEach( function (person) {
+		initiative.forEach( function (person, i) {
 			if (input === person.name.toLowerCase()) {
 				initiative.splice(i, 1);
 				found = true;
@@ -402,7 +404,7 @@ function clearByName () {
 	} catch (err) {
 		handler(err);
 	} finally {
-		return printInitiative();
+		printInitiative();
 	}
 }
 
@@ -410,7 +412,7 @@ function clearByName () {
 function clearInitiative () {
 	initiative.length = 0;
 	delete localStorage.initiative;
-	return '';
+	initDisplay.textContent = '';
 }
 
 // Convert 'initiative' array into readable message to display, and decodable message to store
@@ -429,7 +431,7 @@ function printInitiative () {
 	});
 
 	localStorage.initiative = storage;
-	return message;
+	initDisplay.textContent = message;
 }
 
 // Reset initiative inputs
@@ -471,7 +473,7 @@ const calcDiv = document.querySelector('#calculator');
 				calcNodes.calcDisp.value = 0;
 				calc.input = '';
 				calc.rootNum = 0;
-				calc.operator = null;
+				calc.operator = 'plus';
 			});
 			// Backspace; remove last number from calc.input and display new value or 0
 			calcNodes.calcOther[2].addEventListener('click', function () {
@@ -489,7 +491,8 @@ const calcDiv = document.querySelector('#calculator');
 
 const calc = {
 	rootNum: 0,
-	input: ''
+	input: '',
+	operator: 'plus'
 }
 
 /* if 0, make it so it wont repeat 0, but will accept other numbers*/
@@ -512,8 +515,9 @@ function operatorClick (e) {
 		case 'divide':
 			calc.rootNum /= Number(calc.input);
 			break;
-		// case 'equals':
-		// 	console.log('equals');
+		case 'equals':
+			calc.rootNum = Number(calc.input);
+			break;
 		// default:
 		// 	console.error('somethings wrong');
 	}

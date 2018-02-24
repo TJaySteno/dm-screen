@@ -148,14 +148,59 @@ legend {
 	width: 80px;
 }
 
+/*     CALCULATOR MODULE     */
+
+#calculator {
+	background-color: #d2b48c;
+	border: groove 1px #795532;
+	padding: 10px;
+	margin: 5px 0 5px 10px;
+	width: 130px;
+	display: inline-block;
+}
+
+#calculator form {
+	margin: auto;
+}
+
+#calculator button {
+	display: inline-block;
+	box-sizing: border-box;
+	height: 100%;
+	width: 100%;
+
+	border: outset 2px #795532;
+	border-radius: 5px;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+#calculator input {
+	background-color: rgba(121, 85, 50, 0.5);
+	border: 0px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+#calculator td {
+	width: 30px;
+	height: 20px;
+}
+
+#calculator tr:nth-child(1) input {
+	text-align: right;
+	padding: 0 7px;
+}
+
 /*     DISPLAY BOX     */
 
 p#display {
+	display: inline-block;
 	background-color: #d2b48c;
 	border: groove 1px #795532;
 	padding: 10px;
 	margin: 5px auto;
-	height: 120px;
+	height: 100%;
 	width: 65%;
 	word-wrap: normal;
 }

@@ -445,9 +445,15 @@ function clearInitInputs () {
 
 
 /*** CALCULATOR ***/
+// BUG: Pressing '+-' button is full of bugs
+	// '56' then '+-' shows '-0'; evaluates to '-056' on '='
+// NOTE: Add commas at proper places
+	// Create a printCalc function to call
+	// It will add commas to a new variable w/o altering calc.input or .rootNum
+
 /* Define HTML Elements */
 const calcDiv = document.querySelector('#calculator');
-	const calcTable = calcDiv.firstElementChild.firstElementChild.nextElementSibling.firstElementChild;
+	const calcTable = calcDiv.firstElementChild.firstElementChild;
 
 		const calcNodes = {
 			calcDisp: calcTable.querySelector('input'),
@@ -465,11 +471,13 @@ const calcDiv = document.querySelector('#calculator');
 		// Add functionality to other buttons
 			// CE, clear entry; display 0, reset calc.input, keep calc.rootNum
 			calcNodes.calcOther[0].addEventListener('click', function () {
+				e.preventDefault();
 				calcNodes.calcDisp.value = 0;
 				calc.input = '';
 			});
 			// C, clear; reset all values
 			calcNodes.calcOther[1].addEventListener('click', function () {
+				e.preventDefault();
 				calcNodes.calcDisp.value = 0;
 				calc.input = '';
 				calc.rootNum = 0;
@@ -477,6 +485,7 @@ const calcDiv = document.querySelector('#calculator');
 			});
 			// Backspace; remove last number from calc.input and display new value or 0
 			calcNodes.calcOther[2].addEventListener('click', function () {
+				e.preventDefault();
 				calc.input = calc.input.substring(0, calc.input.length-1);
 				if (calc.input) calcNodes.calcDisp.value = calc.input;
 				else calcNodes.calcDisp.value = 0;
@@ -484,6 +493,7 @@ const calcDiv = document.querySelector('#calculator');
 			// Negation button; add or remove a '-' before rootNum
 			/* NOTE: Display '-' more consistenly when dealing with negative nums */
 			calcNodes.calcOther[3].addEventListener('click', function () {
+				e.preventDefault();
 				if (calc.rootNum[0] === '-') calc.rootNum = calc.rootNum.substring(1, calc.rootNum.length);
 				else calc.rootNum = '-' + calc.rootNum;
 				calcNodes.calcDisp.value = calc.rootNum;
@@ -495,40 +505,56 @@ const calc = {
 	operator: 'plus'
 }
 
-/* if 0, make it so it wont repeat 0, but will accept other numbers*/
-	/* if !=0 && input!=0 */
-function numberClick (e) { if (calc.input !== '0') calcNodes.calcDisp.value = calc.input += e.target.value };
+function numberClick (e) {
+	e.preventDefault();
 
-/* BUG: '=' should reset somehow; after num1 + num2 '=', starting num3 should be indepent unless you click on an operator first */
+	// If '=' was just clicked, reset calc values
+	if (calc.operator === 'equals') {
+		calc.rootNum = 0;
+		calc.operator = 'plus';
+	}
+
+	// Add number to calc.input, adding a 0 before solitary decimals
+		// 'else if' statement prevents stringing multiple zeroes
+	if (e.target.value !== '0') {
+		if (e.target.value === '.' && calc.input === '') calc.input += '0';
+		calcNodes.calcDisp.value = calc.input += e.target.value;
+	} else if (calc.input !== '0') {
+		calcNodes.calcDisp.value = calc.input += e.target.value;
+	}
+};
+
 function operatorClick (e) {
-	// Perform equation: [ root (operator) input ]
-	switch (calc.operator) {
-		case 'plus':
-			calc.rootNum += Number(calc.input);
-			break;
-		case 'minus':
-			calc.rootNum -= Number(calc.input);
-			break;
-		case 'times':
-			calc.rootNum *= Number(calc.input);
-			break;
-		case 'divide':
-			calc.rootNum /= Number(calc.input);
-			break;
-		case 'equals':
-			calc.rootNum = Number(calc.input);
-			break;
-		// default:
-		// 	console.error('somethings wrong');
+	e.preventDefault();
+
+	// Perform equation: [ rootNum (operator) input ]
+	if (calc.input !== '') {
+		switch (calc.operator) {
+			case 'plus':
+				if (calc.operator != 'equals') calc.rootNum += Number(calc.input);
+				break;
+			case 'minus':
+				if (calc.operator != 'equals') calc.rootNum -= Number(calc.input);
+				break;
+			case 'times':
+				if (calc.operator != 'equals') calc.rootNum *= Number(calc.input);
+				break;
+			case 'divide':
+				if (calc.operator != 'equals') calc.rootNum /= Number(calc.input);
+				break;
+			case 'equals':
+				if (calc.operator != 'equals') calc.rootNum = Number(calc.input);
+				break;
+			// default:
+			// 	console.error('somethings wrong');
+		}
 	}
 
 	// Display new value, set next operator, and reset input value
-	printCalc(calc.rootNum);
+	calcNodes.calcDisp.value = calc.rootNum;
 	calc.operator = e.target.name;
 	calc.input = '';
 }
-
-function printCalc (num) { calcNodes.calcDisp.value = num };
 
 
 

@@ -115,7 +115,13 @@ button:active, button:hover {
 /*     TEXT     */
 
 .main-title {
-	font-size: 4rem;
+	font-size: 3rem;
+	margin-bottom: -20px;
+}
+
+.main-subtitle {
+	font-size: .9rem;
+	margin-bottom: 20px;
 }
 
 a {
@@ -244,7 +250,7 @@ p#display {
 #initiative button {
 	font-size: 13px;
 	margin: auto;
-	width: 48%;
+	width: 45%;
 }
 
 #initiative div {
@@ -255,7 +261,7 @@ p#display {
 }
 
 #initiative input {
-	width: 25%;
+	width: 20%;
 }
 
 /*     TABLES MODULE     */
